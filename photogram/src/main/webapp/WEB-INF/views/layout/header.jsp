@@ -2,6 +2,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
+
+<sec:authorize access = "isAuthenticated()" >
+<!-- isAuthenticated()는 세션에 접근하는 방법임... -->
+	<sec:authentication property="principal" var = "principal"/>
+	<!-- property="principal"에서 principal은 정해진 키워드임. -->
+	<!-- UserDetails의 인스턴스를 출력한다고 공식 문서에 적혀 있다. -->
+	<!-- header에 명시 했으므로 body에서는 principal.~~로 쓰면 됨 -->
+	<!-- 근데 principal 안에 User 객체가 있고 그 안에 username등이 있으므로 -->
+	<!--  principal.user.username 이렇게 찾아야 됨.-->
+	
+</sec:authorize >
+
 <!DOCTYPE html>
 <html lang="en">
 
