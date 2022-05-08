@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 * */
 		
 		http.authorizeRequests()
-				.antMatchers("/", "/user/**", "/image/**", "/subscribe/**", "/comment/**").authenticated() // 이 주소는 인증 필요함
+				.antMatchers("/", "/user/**", "/image/**", "/subscribe/**", "/comment/**", "/api/**").authenticated() // 이 주소는 인증 필요함
 				.anyRequest().permitAll()  // 그 외의 요청은 허용함
 				.and()
 				.formLogin() 

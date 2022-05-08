@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.utl.Script;
@@ -33,12 +34,15 @@ public class ControllerExceptionHandler {
 	//ex) 회원정보 수정 완료 처리 시 
 	@ExceptionHandler(CustomValidationApiException.class)
 	public ResponseEntity<CMRespDto<?>> validationApiException(CustomValidationApiException e) {
-	
-		System.out.println("===================================== Exception 낚아챘나?");
-		
 		return new ResponseEntity<>(new CMRespDto<>(-1, e.getMessage(), e.getErrorMap()), HttpStatus.BAD_REQUEST); //데이터 리턴
 	}
 
 	
+	//구독 하기 등... 오류 발생시 여기로 옴
+	@ExceptionHandler(CustomApiException.class)
+	public ResponseEntity<CMRespDto<?>> apiException(CustomApiException e) {
+		return new ResponseEntity<>(new CMRespDto<>(-1, e.getMessage(), null), HttpStatus.BAD_REQUEST); //데이터 리턴
+	}
+
 	
 }
