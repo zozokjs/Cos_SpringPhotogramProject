@@ -35,7 +35,6 @@ public class UserService {
 		});
 		
 		System.out.println("============================================");
-		userEntity.getImages().get(0); // 이거 읽는 순간 select * from image...가 실행됨
 		
 		return userEntity; //조회된 회원 프로필 정보
 	}
