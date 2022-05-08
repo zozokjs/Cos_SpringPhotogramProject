@@ -1,11 +1,14 @@
 package com.cos.photogramstart.service;
 
+import java.util.function.Supplier;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
+import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,13 +27,23 @@ public class UserService {
 		//1. 영속화
 		/**Optional..을 쓰면 
 		 * findById()의 결과는 아래처럼 3가지로 나뉨.
-		 *무조건 찾았음(get) / 못찾았음 exception 발동(orElseThrow) / orElse
+		 *무조건 찾았음(get) / 못찾았다면 exception 발동(orElseThrow) / orElse
 		  => id를 찾았다면 get() 함수까지 받을 필요 없으나.
 		  못 찾았을 경우를 대비해서 get() 함수까지 써야 한다.? 35번 영상
 		*/		
 		//즉, userEntity는 영속화된 데이터임.
-		User userEntity = userRepository.findById(id).get();
-
+		/**User userEntity = userRepository.findById(10).orElseThrow(new Supplier<IllegalArgumentException>() {
+			@Override
+			public IllegalArgumentException get() {
+				return  new IllegalArgumentException("찾을 수 없는 id 입니다.");
+			}
+		});*/
+		User userEntity = userRepository.findById(id).orElseThrow(() -> {
+			return  new CustomValidationApiException("찾을 수 없는 id 입니다.");
+		});
+		
+		
+		
 		//암호화부터
 		String rawPassword = user.getPassword();
 		String encPassword = bCryptPasswordEncoder.encode(rawPassword);
