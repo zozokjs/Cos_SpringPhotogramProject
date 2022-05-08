@@ -55,8 +55,21 @@ public class ImageService {
 		
 		Image imageEntity = imageRepository.save(image);
 		
-		System.out.println(imageEntity);
 		
+		//System.out.println(imageEntity);
+		/**
+		 * (위 메소드의 실행 결과는 imageEntity.toString()과 동일함).
+		 * imageEntity를 기본적으로 생성하고 @Data를 붙이면 어노테이션 덕분에
+		 * toString() 메소드가 자동으로 생성 된다.
+		 * 그런데, Image 클래스에는 User 오브젝트가 있따. 
+		 * User 오브젝트.toString()을 출력할 것인데
+		 * User 오브젝트에는 List<Image>image가 있다.
+		 * 다시 image.toString()을 할 것이므로
+		 * 결과적으로 무한참조가 발생되어 오류가 생김.
+		 * 
+		 * 따라서, Image 클래스에서 toString()을 재정의하면서 User 오브젝트를 제외하면
+		 * 무한참조 오류를 피할 수 있다.
+		 * */
 		
 	}
 	
