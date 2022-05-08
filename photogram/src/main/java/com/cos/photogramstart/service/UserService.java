@@ -34,6 +34,9 @@ public class UserService {
 			throw new CustomException("해당 프로필 페이지는 없는 페이지 입니다.");
 		});
 		
+		System.out.println("============================================");
+		userEntity.getImages().get(0); // 이거 읽는 순간 select * from image...가 실행됨
+		
 		return userEntity; //조회된 회원 프로필 정보
 	}
 	
