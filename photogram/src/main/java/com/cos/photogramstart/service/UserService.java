@@ -1,13 +1,12 @@
 package com.cos.photogramstart.service;
 
-import java.util.function.Supplier;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
+import com.cos.photogramstart.handler.ex.CustomException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +18,26 @@ public class UserService {
 	private final UserRepository userRepository;
 	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	//로그인한 사용자의 프로필이 아닌,
+	//사용자가 보길 원하는 회원의 프로필이 표시되어야 함. 그래서 id를 받아야 함.
+	/**
+	 * user 정보, user가 올린 image 정보, 로그인한 사용자가 user를 구독중인지에 대한 정보
+	 * , user가 작성한 게시글 수 등이 필요함.
+	 * */
+	public User 회원프로필(int userId) {
+		
+		//SELECT * FROM image WHERE userid = :userid;
+		
+		//id로 이미지 못 찾을 수도 있으니까 orElseThrow
+		User userEntity = userRepository.findById(userId).orElseThrow(()->{
+			throw new CustomException("해당 프로필 페이지는 없는 페이지 입니다.");
+		});
+		
+		return userEntity; //조회된 회원 프로필 정보
+	}
+	
+	
 	
 	@Transactional
 	public User 회원수정(int id, User user) {
