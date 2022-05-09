@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cos.photogramstart.domain.subscribe.SubscribeRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomException;
@@ -19,6 +20,9 @@ public class UserService {
 	private final UserRepository userRepository;
 	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	private final SubscribeRepository subscribeRepository;
+	
 	
 	//로그인한 사용자의 프로필이 아닌,
 	//사용자가 보길 원하는 회원의 프로필이 표시되어야 함. 그래서 id를 받아야 함.
@@ -41,11 +45,18 @@ public class UserService {
 			throw new CustomException("해당 프로필 페이지는 없는 페이지 입니다.");
 		});
 		
-		//삼항 연산자
 		//사용자 정보 페이지의 사용자 아이디와 로그인한 아이디가 같으면 true
 		dto.setPageOwnerState(pageUserId == principalId);
 		dto.setUser(userEntity);
 		dto.setImageCount(userEntity.getImages().size());
+		
+		//구독 상태
+		int subscribeState = subscribeRepository.mSubscribeState(principalId, pageUserId);
+		//구독 수 
+		int subscribeCount = subscribeRepository.mSubscribeCount(pageUserId);
+		
+		dto.setSubscribeCount(subscribeCount);
+		dto.setSubscribeState(subscribeState == 1);
 		
 		return dto; //조회된 회원 프로필 정보
 	}

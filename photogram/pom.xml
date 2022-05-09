@@ -30,6 +30,7 @@
 		
 		
 		<!-- qlrm -->
+		<!-- db의 result를 자바 클래스에 mapping 해주는 라이브러리 -->
 		<dependency>
 			<groupId>org.qlrm</groupId>
 			<artifactId>qlrm</artifactId>
