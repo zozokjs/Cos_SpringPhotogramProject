@@ -3,6 +3,7 @@ package com.cos.photogramstart.domain.image;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 
 import com.cos.photogramstart.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,8 +43,9 @@ public class Image {
 	 * @Entity라고 적었으므로 DB에는 테이블이 생성될텐데, 아래는 USER 오브젝트이므로 FK가 생성된다. 
 	 * @JoinColumn으로 FK 이름을 지정함
 	 */
+	@JsonIgnoreProperties({"images"})
 	@JoinColumn(name = "userId")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private User user; 
 	
 	
