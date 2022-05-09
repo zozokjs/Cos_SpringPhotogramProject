@@ -8,6 +8,7 @@ import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
+import com.cos.photogramstart.web.dto.user.UserProfileDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,18 +30,24 @@ public class UserService {
 	//서비스 단에는 select만 하더라도 Transactional을 걸어주는 게 좋다. 
 	//readonly True를 넣으면 읽기전용으로 인식하므로 jpa는
 	//영속성 컨텍스트 내의 변경 여부를 감시 및 감지 하지 않는다.
-	public User 회원프로필(int userId) {
+	public UserProfileDto 회원프로필(int pageUserId, int principalId) {
 		
 		//SELECT * FROM image WHERE userid = :userid;
 		
+		UserProfileDto dto = new UserProfileDto();
+		
 		//id로 이미지 못 찾을 수도 있으니까 orElseThrow
-		User userEntity = userRepository.findById(userId).orElseThrow(()->{
+		User userEntity = userRepository.findById(pageUserId).orElseThrow(()->{
 			throw new CustomException("해당 프로필 페이지는 없는 페이지 입니다.");
 		});
 		
-		System.out.println("============================================");
+		//삼항 연산자
+		//사용자 정보 페이지의 사용자 아이디와 로그인한 아이디가 같으면 true
+		dto.setPageOwnerState(pageUserId == principalId);
+		dto.setUser(userEntity);
+		dto.setImageCount(userEntity.getImages().size());
 		
-		return userEntity; //조회된 회원 프로필 정보
+		return dto; //조회된 회원 프로필 정보
 	}
 	
 	

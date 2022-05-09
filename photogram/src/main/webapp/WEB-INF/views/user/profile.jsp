@@ -26,10 +26,19 @@
 		<!--유저정보 및 사진등록 구독하기-->
 		<div class="profile-right">
 			<div class="name-group">
-				<h2>${user.name}</h2>
+				<h2>${dto.user.name}</h2>
+			
+				<c:choose>
+					<c:when test="${dto.pageOwnerState}">
+						<button class="cta" onclick="location.href='/image/upload'">사진등록</button>
+					</c:when>
+					<c:otherwise>
+						<button class="cta" onclick="toggleSubscribe(this)">구독하기</button>
+					</c:otherwise>
+				</c:choose>
 
-				<button class="cta" onclick="location.href='/image/upload'">사진등록</button>
-				<button class="cta" onclick="toggleSubscribe(this)">구독하기</button>
+				
+				
 				<button class="modi" onclick="popup('.modal-info')">
 					<i class="fas fa-cog"></i>
 				</button>
@@ -37,15 +46,15 @@
 
 			<div class="subscribe">
 				<ul>
-					<li><a href=""> 게시물<span>3</span>
+					<li><a href=""> 게시물<span>${dto.imageCount}</span>
 					</a></li>
 					<li><a href="javascript:subscribeInfoModalOpen();"> 구독정보<span>2</span>
 					</a></li>
 				</ul>
 			</div>
 			<div class="state">
-				<h4>${user.bio}</h4>
-				<h4>${user.website}</h4>
+				<h4>${dto.user.bio}</h4>
+				<h4>${dto.user.website}</h4>
 			</div>
 		</div>
 		<!--유저정보 및 사진등록 구독하기-->
@@ -67,7 +76,7 @@
 				<!-- 아래에서 user.images는 Image 클래스의  private List<Image> images를 말함 -->
 				<!-- EL 표현식...에서 변수명을 적으면 GET 함수가 자동으로 호출된다. 49번 영상 3분경 -->
 				<!-- 호출된 결과는 var="image"에 담긴다. -->
-				<c:forEach var="image" items="${user.images}">
+				<c:forEach var="image" items="${dto.user.images}">
 					<div class="img-box">
 						<a href=""> <img src="/upload/${image.postImageUrl}" />
 											<!-- WebMvcConfig 클래스에서 경로를 명시했기에 위가 작동 됨. -->
