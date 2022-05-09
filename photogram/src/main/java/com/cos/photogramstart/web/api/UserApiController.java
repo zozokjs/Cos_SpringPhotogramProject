@@ -46,11 +46,12 @@ public class UserApiController {
 			 for(FieldError error : bindingResult.getFieldErrors()) {
 				 
 				 errorMap.put(error.getField(), error.getDefaultMessage());		
-
-				 System.out.println("======================");				 
-				 System.out.println(error.getDefaultMessage());  
-				 System.out.println("======================");		
-			 }
+					/*
+									 System.out.println("======================");				 
+									 System.out.println(error.getDefaultMessage());  
+									 System.out.println("======================");		
+					*/			
+				 }
 			throw new CustomValidationApiException("유효성 검사 실패함", errorMap); 
 			//ControllerExceptionHandler에서 모든 Exception을 가로채게 했으므로 그 쪽 클래스가 발동함.	 
 		 }else {
@@ -71,6 +72,17 @@ public class UserApiController {
 				principalDetails.setUser(userEntity); //세션 정보를 변경 함(반드시 해야 함)
 				
 				return new CMRespDto<>(1, "회원수정완료",userEntity);
+				/*			
+				 * 응답 시 userEntity의 모든 Getter 함수가 호출되고 JSON으로 파싱되어 응답한다
+		 		* 	userEntity 응답 시, JSON으로 파싱 된다.
+		 		*  1. MessageConverter가 모든 Getter 함수를 호출함 동작함
+		 		*  2. -> User 오브젝트의 images 필드를 호출하기 위해 getImages()가 동작함
+		 		*  3. 그 동작 결과로 Image 오브젝트의 getter 함수가 호출되고
+		 		*  4. Image 오브젝트의 user 필드를 호출하기 위해 getUser()가 동작.
+		 		*  5. 결국 무한 참조 발생
+		 		*  따라서 4번에서 getUser가 이뤄지지 않도록 막아야 함.
+		 		*  
+				*/
 		 }
 		
 		

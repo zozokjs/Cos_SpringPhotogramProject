@@ -38,8 +38,9 @@ public class UserController {
 	@GetMapping("/user/{id}/update")
 	public String update(@PathVariable int id , @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
+		//	System.out.println("세션 정보 : "+principalDetails.getUser());
+		
 		//SecurityContextHolder 안에 있는 SecurityContext 안에 있는 Authentication 객체에 접근 하는 방법
-		System.out.println("세션 정보 : "+principalDetails.getUser());
 		/**
 		 * 	 이렇게만 해도 update.jsp에서 
 		 * ${principal.user.username}로 받아올 수 있다.
@@ -51,7 +52,7 @@ public class UserController {
 		/**@AuthenticationPrincipal 없이 찾는 방법 */
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();		
 		PrincipalDetails otherPrincipalDetails= (PrincipalDetails) auth.getPrincipal();		
-		System.out.println("(다른 방식으로)세션 정보 : "+otherPrincipalDetails.getUser());
+		//System.out.println("(다른 방식으로)세션 정보 : "+otherPrincipalDetails.getUser());
 				
 		return "user/update";
 	}

@@ -25,6 +25,10 @@ public class UserService {
 	 * user 정보, user가 올린 image 정보, 로그인한 사용자가 user를 구독중인지에 대한 정보
 	 * , user가 작성한 게시글 수 등이 필요함.
 	 * */
+	@Transactional(readOnly = true)
+	//서비스 단에는 select만 하더라도 Transactional을 걸어주는 게 좋다. 
+	//readonly True를 넣으면 읽기전용으로 인식하므로 jpa는
+	//영속성 컨텍스트 내의 변경 여부를 감시 및 감지 하지 않는다.
 	public User 회원프로필(int userId) {
 		
 		//SELECT * FROM image WHERE userid = :userid;
