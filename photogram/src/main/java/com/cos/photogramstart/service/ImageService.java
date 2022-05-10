@@ -38,6 +38,27 @@ public class ImageService {
 		
 		Page<Image> images = imageRepository.mStory(principalId, pageable);
 		
+		//images에 좋아요 여부를 담아야 함
+		images.forEach((image)->{
+			
+			image.setLikeCount(image.getLikes().size());	
+
+			//어떤 이미지에 좋아요한 사람을 모두 가져와서
+			image.getLikes().forEach((like)->{
+				
+				//그 좋아요를 로그인한 사람이 했는지를 확인
+				if(like.getUser().getId() == principalId) {
+					//좋아요 했음.
+					image.setLikeState(true);
+				
+				}
+				else {
+					 //좋아요 안 했음
+				}
+			});
+		});
+		
+		
 		return images;
 	}
 	
