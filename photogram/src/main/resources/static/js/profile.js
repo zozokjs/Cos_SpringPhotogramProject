@@ -91,7 +91,19 @@ function getSubscribeModalItem(u) {
 
 
 // (3) 유저 프로파일 사진 변경 (완)
-function profileImageUpload() {
+function profileImageUpload(pageUserId, principalId) {
+	
+	//console.log("pageUserId : ", pageUserId);
+	//console.log("principalId : " ,principalId);
+	
+	//로그인한 사람과 프로필페이지주인과 같지 않다면
+	if(pageUserId != principalId){
+		alert("프로필 사진을 수정할 수 없는 유저입니다.");
+		return;
+	}
+
+
+
 	$("#userProfileImageInput").click();
 
 	$("#userProfileImageInput").on("change", (e) => {
@@ -102,12 +114,47 @@ function profileImageUpload() {
 			return;
 		}
 
-		// 사진 전송 성공시 이미지 변경
-		let reader = new FileReader();
-		reader.onload = (e) => {
-			$("#userProfileImage").attr("src", e.target.result);
-		}
-		reader.readAsDataURL(f); // 이 코드 실행시 reader.onload 실행됨.
+
+		//서버에 이미지를 전송해야 함.
+		//form 태그를 가져옴
+		let profileImageForm = $("#userProfileImageForm")[0];
+		console.log("a", profileImageForm);
+
+
+	    //FormData 객체를 이용하면 form 태그의 필드와 그 값을 나타내는 일련의 key/value 값을 담을 수 있다.
+		let formData = new FormData(profileImageForm);
+		
+		$.ajax({
+			type : "put",
+			url : `/api/user/${principalId}/profileImageUrl`,
+			data : formData, 
+			contentType : false,  
+			//x-www-urlencoded로 파싱되는 것을 방지함.
+			//ajax로 사진 보내려면 false 필수로 false 해야 함.  
+			
+			processData : false,  
+			// 필수. contentType을 false로 준다면 내가 보내는 데이터 타입이 QueryString이 자동 설정되므로 이것도 false 해야 함.
+			
+			enctype : "multipart/form-data",
+			dataType : "json"
+		
+		}).done(res=>{
+			
+			// 사진 전송 성공시 이미지 변경
+			let reader = new FileReader();
+			reader.onload = (e) => {
+				$("#userProfileImage").attr("src", e.target.result);
+			}
+			reader.readAsDataURL(f); // 이 코드 실행시 reader.onload 실행됨.
+				
+		}).fail(error=>{
+			
+			console.log("오류", error);
+			
+		});		
+
+
+
 	});
 }
 

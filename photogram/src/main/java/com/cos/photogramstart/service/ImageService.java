@@ -32,6 +32,18 @@ public class ImageService {
 	private String uploadFolder ;
 	
 	
+	
+	@Transactional(readOnly = true)
+	public List<Image> 인기사진(){
+		
+		return imageRepository.mPopular();
+	}
+	
+	
+	
+	
+	
+	
 	//구독한 사람의 이미지 가져오기?
 	@Transactional(readOnly = true)
 	public Page<Image> 이미지스토리(int principalId, Pageable pageable){

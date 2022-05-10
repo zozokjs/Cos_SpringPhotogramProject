@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.user.User;
@@ -24,6 +25,7 @@ import com.cos.photogramstart.service.UserService;
 import com.cos.photogramstart.web.dto.CMRespDto;
 import com.cos.photogramstart.web.dto.subscribe.SubscribeDto;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
+import com.nimbusds.oauth2.sdk.Response;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +37,30 @@ public class UserApiController {
 	private final UserService userService;
 	
 	private final SubscribeService subscribeService;
+	
+	
+	//profile.jsp 및 profile.js에서 profileImageUpload()
+	//프로필 사진 업로드.. 데이터를 받는 함수임/
+	//★함수의 매개변수 중에서 profileImageFile는 jsp에 name에 명시된 것을 그대로 들고와야 함.
+	@PutMapping("/api/user/{principalId}/profileImageUrl")
+	public ResponseEntity<?> profileImageUrlUpdate(
+			@PathVariable int principalId, MultipartFile profileImageFile,
+			@AuthenticationPrincipal PrincipalDetails principalDetails){
+		
+		//사진이 바뀌었다면, 세션 값도 바뀌어야 함.
+		User userEntiry =  
+		userService.회원프로필사진변경(principalId, profileImageFile);
+		principalDetails.setUser(userEntiry);
+		
+		return new ResponseEntity<>(new CMRespDto<>(1, "프로필 사진 변경 되었습니다",null), HttpStatus.OK);
+		
+		
+		//사진이 정상적으로 바뀌었습니다.
+	
+	}
+	
+	
+	
 	
 	
 	//pageUserId가 구독하고 있는 모든 정보 표시
