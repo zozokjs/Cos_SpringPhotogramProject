@@ -38,22 +38,6 @@ public class CommentApiController {
 			BindingResult bindingResult,
 			@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-		// 댓글 작성 시 유효성 검사 실패 했을 때 
-		if (bindingResult.hasErrors()) {
-			Map<String, String> errorMap = new HashMap<>();
-			for (FieldError error : bindingResult.getFieldErrors()) {
-
-				errorMap.put(error.getField(), error.getDefaultMessage());
-				/*
-								 System.out.println("======================");				 
-								 System.out.println(error.getDefaultMessage());  
-								 System.out.println("======================");		
-				*/
-			}
-			throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
-			// ControllerExceptionHandler에서 모든 Exception을 가로채게 했으므로 그 쪽 클래스가 발동함.
-		}
-
 		// System.out.println(commentDto);
 
 		Comment comment = commentService.댓글쓰기(commentDto.getContent(), commentDto.getImageId(),

@@ -79,32 +79,13 @@ public class AuthController {
 		 
 		 log.info(signupDto.toString());  //클라이언트가 작성하여 전송한 값을 dto에 담았음.
 
-		 if(bindingResult.hasErrors()) {	
-			 Map<String, String> errorMap = new HashMap<>();			 
-			 for(FieldError error : bindingResult.getFieldErrors()) {
-				 
-				 errorMap.put(error.getField(), error.getDefaultMessage());		
-
-				 System.out.println("======================");				 
-				 System.out.println(error.getDefaultMessage());  
-				 //라이브러리가 알아서 파악해서 한글화해서 메세지 뱉어줌
-				 //ex) 20 이하여야 합니다  /  공백일 수 없습니다
-				 System.out.println("======================");		
-			 }
-			//return "오류났다";
-			throw new CustomValidationException("유효성 검사 실패함", errorMap); 
-			//Exception 발동시킴...
-			//ControllerExceptionHandler에서 모든 Exception을 가로채게 했으므로 그 쪽 클래스가 발동함.
+		 User user = signupDto.toEntity(); 
 		 
-		 }else {
-			 User user = signupDto.toEntity(); 
-			 
-			 log.info(user.toString());
-			 
-			 User userEntity =  authService.회원가입(user);
-			// System.out.println(userEntity);
-			 return "auth/signin"; //회원 가입 성공 시 리턴
-		 }
+		// log.info(user.toString());
+		 
+		authService.회원가입(user);
+		// System.out.println(userEntity);
+		 return "auth/signin"; //회원 가입 성공 시 리턴
 		//return null;
 
 	 }

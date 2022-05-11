@@ -86,50 +86,36 @@ public class UserApiController {
 		
 		System.out.println("hchc  < "+userUpdateDto);
 		
-		//회원 정보 수정 시 유효성 검사 오류 있을 때
-		if(bindingResult.hasErrors()) {	
-			 Map<String, String> errorMap = new HashMap<>();			 
-			 for(FieldError error : bindingResult.getFieldErrors()) {
-				 
-				 errorMap.put(error.getField(), error.getDefaultMessage());		
-					/*
-									 System.out.println("======================");				 
-									 System.out.println(error.getDefaultMessage());  
-									 System.out.println("======================");		
-					*/			
-				 }
-			throw new CustomValidationApiException("유효성 검사 실패함", errorMap); 
-			//ControllerExceptionHandler에서 모든 Exception을 가로채게 했으므로 그 쪽 클래스가 발동함.	 
-		 }else {
-			//회원 정보 수정 시 유효성 검사 통과 시 
-			 /**
-				 * 이 메소드의 실행 결과로 더티 채킹이 이뤄져서 업데이트 됨.
-				 * 이 메소드 안에서는 (
-				 * 1. id 찾음으로써 영속화 
-				 * 2. 영속화된 데이터를 수정 데이터로 덮어 씌움
-				 * 3. 영속화된 데이터를 리턴
-				 * 4. 1번과 2번의 데이터가 별개이므로 채킹이 이뤄져서 db 업데이트 발생)
-				 * 이 이뤄진다. 다만, 시큐리티 세션은 변경이 안 되어 있음.
-				 * */	
-				User userEntity 
-				= userService.회원수정(id, userUpdateDto.toEntity());
-				
-				
-				principalDetails.setUser(userEntity); //세션 정보를 변경 함(반드시 해야 함)
-				
-				return new CMRespDto<>(1, "회원수정완료",userEntity);
-				/*			
-				 * 응답 시 userEntity의 모든 Getter 함수가 호출되고 JSON으로 파싱되어 응답한다
-		 		* 	userEntity 응답 시, JSON으로 파싱 된다.
-		 		*  1. MessageConverter가 모든 Getter 함수를 호출함 동작함
-		 		*  2. -> User 오브젝트의 images 필드를 호출하기 위해 getImages()가 동작함
-		 		*  3. 그 동작 결과로 Image 오브젝트의 getter 함수가 호출되고
-		 		*  4. Image 오브젝트의 user 필드를 호출하기 위해 getUser()가 동작.
-		 		*  5. 결국 무한 참조 발생
-		 		*  따라서 4번에서 getUser가 이뤄지지 않도록 막아야 함.
-		 		*  
-				*/
-		 }
+		
+		//회원 정보 수정 시 유효성 검사 통과 시 
+		 /**
+			 * 이 메소드의 실행 결과로 더티 채킹이 이뤄져서 업데이트 됨.
+			 * 이 메소드 안에서는 (
+			 * 1. id 찾음으로써 영속화 
+			 * 2. 영속화된 데이터를 수정 데이터로 덮어 씌움
+			 * 3. 영속화된 데이터를 리턴
+			 * 4. 1번과 2번의 데이터가 별개이므로 채킹이 이뤄져서 db 업데이트 발생)
+			 * 이 이뤄진다. 다만, 시큐리티 세션은 변경이 안 되어 있음.
+			 * */	
+			User userEntity 
+			= userService.회원수정(id, userUpdateDto.toEntity());
+			
+			
+			principalDetails.setUser(userEntity); //세션 정보를 변경 함(반드시 해야 함)
+			
+			return new CMRespDto<>(1, "회원수정완료",userEntity);
+			/*			
+			 * 응답 시 userEntity의 모든 Getter 함수가 호출되고 JSON으로 파싱되어 응답한다
+	 		* 	userEntity 응답 시, JSON으로 파싱 된다.
+	 		*  1. MessageConverter가 모든 Getter 함수를 호출함 동작함
+	 		*  2. -> User 오브젝트의 images 필드를 호출하기 위해 getImages()가 동작함
+	 		*  3. 그 동작 결과로 Image 오브젝트의 getter 함수가 호출되고
+	 		*  4. Image 오브젝트의 user 필드를 호출하기 위해 getUser()가 동작.
+	 		*  5. 결국 무한 참조 발생
+	 		*  따라서 4번에서 getUser가 이뤄지지 않도록 막아야 함.
+	 		*  
+			*/
+		 
 		
 		
 
