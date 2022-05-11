@@ -52,6 +52,14 @@ public class User {
 
 	private String role; // 권한
 
+	
+	
+	/**
+	 * 한 번에 가져오는 게 많다면 Lazy를, 적다면 Eager을 쓰는 게 좋음
+	 * User를 select 할 때, User가 올린 모든 image를 select 할텐데,
+	 * 이것이 EAGER 전략이었다면 
+	 * User가 올린 무수한 image들을 가져와야 함. 그럴 필요까진 없으니 Lazy를 쓴다.
+	 * */
 	// 48번 영상 13분부터
 	// 1명의 User는 여러 개의 Image를 가질 수 있다.
 	// Image 클래스의 변수 user를 적었음

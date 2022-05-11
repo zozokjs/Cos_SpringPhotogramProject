@@ -4,6 +4,7 @@ import java.util.Map;
 
 
 //RunTime시 발생되는 모든 Exception을 가로채려면 RuntimeException만 상속 받으면 됨
+//DATA를 리턴함
 public class CustomApiException extends RuntimeException{
 
 	/**
