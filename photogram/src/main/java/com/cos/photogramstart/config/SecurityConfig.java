@@ -7,10 +7,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.cos.photogramstart.config.oauth.OAuth2DetailsService;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @EnableWebSecurity //시큐리티 활성화 
 @Configuration // ioc 등록
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	
+	private final OAuth2DetailsService oAuth2DetailsService;
 	
 	@Bean
 	public BCryptPasswordEncoder encode() {
@@ -37,7 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.formLogin() 
 				.loginPage("/auth/signin") //antMatcher()에 적힌 주소로 접근한다면 이 주소로 향해라  GET요청임
 				.loginProcessingUrl("/auth/signin") //이 주소로 POST 방식 요청하면 시큐리티가 로그인을 낚아채서 진행해줌.
-				.defaultSuccessUrl("/"); //loginPage()에 적힌 주소에서 인증 되었다면 그 다음 이 주소로 향해라. 
+				.defaultSuccessUrl("/") //loginPage()에 적힌 주소에서 인증 되었다면 그 다음 이 주소로 향해라. 
+				.and()
+				.oauth2Login()  //oauth2 로그인도 할거임
+				.userInfoEndpoint() //oauth2 로그인을 하면 최종 응답을 회원 정보로 바로 받을 수 있게 해줘
+				.userService(oAuth2DetailsService); //
 		
 	}
 	

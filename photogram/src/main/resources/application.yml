@@ -31,13 +31,20 @@ spring:
       enabled: true  ##업로드 가능
       max-file-size: 2MB    ##업로드 파일 최대 크기
 
-
-
   security:
     user:
       name: test
       password: 1234   
 
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 757304458974893
+            client-secret: f94494879ea1b36544da429359a49222
+            scope:            - public_profile
+            - email
+            
 file:
   path: D:/workspace_Spring_Photogram/upload/
   

@@ -31,7 +31,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 번호 자동 증가 설정함. 정책은 DB처럼 번호 증가함
 	private int id;
 
-	@Column(length = 20, unique = true)
+	@Column(length = 100, unique = true)
 	private String username;
 
 	@Column(nullable = false)

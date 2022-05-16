@@ -2,22 +2,32 @@ package com.cos.photogramstart.config.auth;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.cos.photogramstart.domain.user.User;
 
 import lombok.Data;
 
+//일반적인 로그인, OAuth2를 이용한 로그인 시 
+//모두 PrincipalDetails 타입으로 받기 위해 2개를 implements 받음.
 @Data
-public class PrincipalDetails implements UserDetails{
+public class PrincipalDetails implements UserDetails, OAuth2User{
 
 	private static final long	 serialVersionUID = 1L;
 	
 	private User user;
 	
+	private Map<String, Object> attributes;
+	
 	public PrincipalDetails(User u) {
+		this.user = u;
+	}
+	
+	public PrincipalDetails(User u, Map<String, Object> attributes) {
 		this.user = u;
 	}
 	
@@ -49,12 +59,10 @@ public class PrincipalDetails implements UserDetails{
 		 * 달리 말해, add() 함수의 매개변수로는 함수가 들어가야 한다.
 		 * getAuthority()를 통해야만 권한 목록을 가져 올 수 있고 또한,
 		 * user.getRole()을 통해야만 권한 목록을 가져 올 수 있으므로.
-		 * 
 		 * */
 		collector.add(() -> {
 			return user.getRole();			
 		});
-		
 		
 		return collector;
 	}
@@ -87,6 +95,18 @@ public class PrincipalDetails implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+
+	@Override
+	public Map<String, Object> getAttributes() {
+		return attributes; //{id=73dqwd.., name=dqwda, email=asdqwd@naver.com}가 리턴됨
+	}
+
+
+	@Override
+	public String getName() {
+		return (String)attributes.get("name");
 	}
 
 }
