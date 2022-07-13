@@ -52,6 +52,7 @@ public class AuthController {
 		 return "auth/signin";
 	 }
 	 
+	 //회원정보 화면으로 이동 
 	 @GetMapping("/auth/signup")
 	 public String signupForm() {
 		 return "auth/signup";
@@ -66,8 +67,8 @@ public class AuthController {
 	  * 3. 클라리언트가 회원가입 페이지에 작성하고 서버에 요청함
 	  * 4. 시큐리티는 방금 심었던 CSRF를 검사한다. 방금 심었던 토큰이 있으면 가입 처리함.
 	  * 이를 비활성화하려고 http.csrf.disable()을 했음.
-	  * */
-	 
+	  * */	 
+	 //회원정보 입력후 가입 처리
 	 @PostMapping("/auth/signup")
 	 public String signup(@Valid SignupDto signupDto, BindingResult bindingResult) {
 		 //@Valid 걸어서 유효성 체크 하게 함...

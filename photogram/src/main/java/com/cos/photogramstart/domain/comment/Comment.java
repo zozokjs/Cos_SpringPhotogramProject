@@ -39,7 +39,8 @@ public class Comment {
 	@JoinColumn(name = "userId")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
-	
+
+	//@JsonIgnoreProperties({"comments"})
 	@JoinColumn(name = "imageId")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Image image;

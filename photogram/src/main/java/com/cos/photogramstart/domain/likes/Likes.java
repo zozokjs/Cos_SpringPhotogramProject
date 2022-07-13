@@ -46,7 +46,7 @@ public class Likes {
 	
 	//어떤 이미지를 누가 좋아하는가?
 	
-	
+	//@JsonIgnoreProperties({"likes"})
 	@JoinColumn(name = "imageId")
 	@ManyToOne //기본 전력은 EAGER이다.
 	//하나의 이미지는 여러 개의 like를 가진다.

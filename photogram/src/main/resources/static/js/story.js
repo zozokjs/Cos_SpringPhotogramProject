@@ -18,14 +18,14 @@ let page = 0;
 
 // (1) 스토리 로드하기
 function storyLoad() {
-
+	
 	$.ajax({
 		url : `/api/image?page=${page}`,
 		dataType : "json"
 	}).done(res=>{
 		console.log(res);
 		
-		res.data.content.forEach((image)=> {
+			res.data.content.forEach((image)=> {
 			let storyItem = getStoryItem(image);
 			$("#storyList").append(storyItem);
 		});

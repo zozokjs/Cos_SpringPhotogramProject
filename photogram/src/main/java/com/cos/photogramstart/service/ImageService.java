@@ -76,7 +76,7 @@ public class ImageService {
 	
 	
 	
-	
+	//사진 업로드가 프로필사진과 일반사진 업로드 2종류 있음
 	@Transactional
 	public void 사진업로드(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
 		

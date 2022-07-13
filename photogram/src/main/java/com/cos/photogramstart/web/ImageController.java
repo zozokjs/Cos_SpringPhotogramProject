@@ -47,6 +47,8 @@ public class ImageController {
 		return "image/upload";
 	}
 	
+	
+	//이미지 업로드... 이미지, 텍스트가 같이 올라감
 	@PostMapping("/image")
 	public String imageUpload
 	(ImageUploadDto imageUploadDto, @AuthenticationPrincipal PrincipalDetails principalDetails ) {

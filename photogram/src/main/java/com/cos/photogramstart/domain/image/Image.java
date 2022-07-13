@@ -35,7 +35,7 @@ public class Image {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 번호 자동 증가 설정함. 정책은 DB처럼 번호 증가함
 	private int id;
 	
-	private String caption; //나 너무 피곤해;;
+	private String caption; //제목
 	
 	private String postImageUrl; //이미지 url임.
 	//사진을 받아서, 서버의 특정 폴더에 저장할 것임
